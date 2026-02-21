@@ -28,3 +28,8 @@ MIN_TRACKING_CONFIDENCE  = 0.55
 # Landmarks with visibility below this value are considered out-of-frame.
 # Angle calculation and rep counting are skipped when any joint is occluded.
 MIN_LANDMARK_VISIBILITY  = 0.6
+
+# ── Pose backend ──────────────────────────────────────────────────────────
+# Default backend used at startup. Can be switched live from the UI.
+# Options: "mediapipe" | "yolo"
+POSE_BACKEND = "mediapipe"

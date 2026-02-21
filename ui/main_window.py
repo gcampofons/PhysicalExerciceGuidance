@@ -47,6 +47,8 @@ class MainWindow(QMainWindow):
 
         self._thread: CameraThread | None = None
         self._ex_buttons: list[ExerciseButton] = []
+        self._current_backend: str = "mediapipe"
+        self._current_ex_idx:  int = 0
 
         self._build_ui()
         self._start_camera()
@@ -78,10 +80,33 @@ class MainWindow(QMainWindow):
         bar.setStyleSheet("background: #0f172a; border-bottom: 1px solid #1e293b;")
         lay = QHBoxLayout(bar)
         lay.setContentsMargins(20, 0, 20, 0)
+
         logo = QLabel("🏋  AI Exercise Trainer")
         logo.setStyleSheet("color: #f1f5f9; font: 700 16px 'Segoe UI';")
         lay.addWidget(logo)
         lay.addStretch()
+
+        # ── Backend toggle ────────────────────────────────────────────────────
+        toggle_wrap = QFrame()
+        toggle_wrap.setStyleSheet(
+            "QFrame { background: #1e293b; border-radius: 8px; "
+            "border: 1px solid #334155; }"
+        )
+        toggle_lay = QHBoxLayout(toggle_wrap)
+        toggle_lay.setContentsMargins(3, 3, 3, 3)
+        toggle_lay.setSpacing(2)
+
+        self._btn_mediapipe = QPushButton("⚡ MediaPipe")
+        self._btn_yolo      = QPushButton("🎯 YOLOv8")
+        for btn in (self._btn_mediapipe, self._btn_yolo):
+            btn.setFixedHeight(28)
+            btn.setCursor(Qt.CursorShape.PointingHandCursor)
+            toggle_lay.addWidget(btn)
+
+        self._btn_mediapipe.clicked.connect(lambda: self._on_backend_changed("mediapipe"))
+        self._btn_yolo.clicked.connect(lambda: self._on_backend_changed("yolo"))
+        lay.addWidget(toggle_wrap)
+        self._update_backend_buttons()
         return bar
 
     def _build_sidebar(self) -> QWidget:
@@ -235,19 +260,18 @@ class MainWindow(QMainWindow):
     #  CAMERA THREAD
     # ══════════════════════════════════════════════════════════════
     def _start_camera(self) -> None:
-        self._thread = CameraThread(parent=self)
+        self._thread = CameraThread(backend=self._current_backend, parent=self)
         self._thread.frame_ready.connect(self._on_frame_ready)
         self._thread.stats_updated.connect(self._on_stats_updated)
         self._thread.state_changed.connect(self._on_state_changed)
         self._thread.start()
-
-        # Select first exercise once thread exists
-        self._on_exercise_selected(0)
+        self._on_exercise_selected(self._current_ex_idx)
 
     # ══════════════════════════════════════════════════════════════
     #  SLOTS
     # ══════════════════════════════════════════════════════════════
     def _on_exercise_selected(self, idx: int) -> None:
+        self._current_ex_idx = idx
         for i, btn in enumerate(self._ex_buttons):
             btn.setChecked(i == idx)
         self._tip_label.setText(REGISTRY[idx].tip)
@@ -257,6 +281,30 @@ class MainWindow(QMainWindow):
     def _on_reset_reps(self) -> None:
         if self._thread:
             self._thread.reset_reps()
+
+    # ── Backend switching ──────────────────────────────────────────────────────
+    def _on_backend_changed(self, backend: str) -> None:
+        if backend == self._current_backend:
+            return
+        self._current_backend = backend
+        self._update_backend_buttons()
+        if self._thread:
+            self._thread.stop()
+            self._thread.wait(3000)
+            self._thread = None
+        self._start_camera()
+
+    def _update_backend_buttons(self) -> None:
+        _ACTIVE   = ("background: #3b82f6; color: #ffffff; border-radius: 6px;"
+                     " font: 600 11px 'Segoe UI'; padding: 0 12px; border: none;")
+        _INACTIVE = ("background: transparent; color: #64748b; border-radius: 6px;"
+                     " font: 600 11px 'Segoe UI'; padding: 0 12px; border: none;")
+        self._btn_mediapipe.setStyleSheet(
+            _ACTIVE if self._current_backend == "mediapipe" else _INACTIVE
+        )
+        self._btn_yolo.setStyleSheet(
+            _ACTIVE if self._current_backend == "yolo" else _INACTIVE
+        )
 
     def _on_frame_ready(self, frame: np.ndarray) -> None:
         h, w, ch  = frame.shape

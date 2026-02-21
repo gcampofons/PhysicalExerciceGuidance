@@ -20,6 +20,8 @@ from core.config import (
     MODEL_PATH, MODEL_URL, MODELS_DIR,
     MIN_DETECTION_CONFIDENCE, MIN_TRACKING_CONFIDENCE,
 )
+from detection.base_detector import BaseDetector
+from detection.keypoint import Keypoint
 
 _download_lock = threading.Lock()
 
@@ -34,13 +36,11 @@ def ensure_model() -> None:
             print("[PoseDetector] Model ready.")
 
 
-class PoseDetector:
+class PoseDetector(BaseDetector):
     """
     Wraps mediapipe.tasks.vision.PoseLandmarker in VIDEO running mode.
 
-    Usage:
-        with PoseDetector() as detector:
-            landmarks = detector.detect(bgr_frame, timestamp_ms)
+    Returns 33 Keypoints in MediaPipe slot order.
     """
 
     def __init__(self) -> None:
@@ -58,18 +58,11 @@ class PoseDetector:
         )
         self._landmarker = PoseLandmarker.create_from_options(opts)
 
-    # ── Context manager ───────────────────────────────────────────────────────
-    def __enter__(self) -> "PoseDetector":
-        return self
-
-    def __exit__(self, *_) -> None:
-        self.close()
-
     def close(self) -> None:
         self._landmarker.close()
 
     # ── Public API ────────────────────────────────────────────────────────────
-    def detect(self, bgr_frame: np.ndarray, timestamp_ms: int) -> list | None:
+    def detect(self, bgr_frame: np.ndarray, timestamp_ms: int) -> list[Keypoint] | None:
         """
         Run pose detection on a single BGR frame.
 
@@ -78,9 +71,14 @@ class PoseDetector:
             timestamp_ms: Monotonically increasing timestamp in milliseconds.
 
         Returns:
-            List of 33 NormalizedLandmark objects, or None if no pose found.
+            List of 33 Keypoints in MediaPipe slot order, or None if no pose found.
         """
         rgb = np.ascontiguousarray(cv2.cvtColor(bgr_frame, cv2.COLOR_BGR2RGB))
         mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)
         result = self._landmarker.detect_for_video(mp_image, timestamp_ms)
-        return result.pose_landmarks[0] if result.pose_landmarks else None
+        if not result.pose_landmarks:
+            return None
+        return [
+            Keypoint(lm.x, lm.y, lm.visibility)
+            for lm in result.pose_landmarks[0]
+        ]
