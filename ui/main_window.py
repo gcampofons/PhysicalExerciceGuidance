@@ -16,6 +16,7 @@ import numpy as np
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QImage, QPixmap
 from PyQt6.QtWidgets import (
+    QFileDialog,
     QFrame,
     QGraphicsDropShadowEffect,
     QHBoxLayout,
@@ -28,7 +29,7 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
-from camera.camera_thread import CameraThread
+from camera.camera_thread import CameraThread, SOURCE_CAMERA, SOURCE_SCREEN, list_monitors
 from core.exercises import REGISTRY
 from ui.widgets.angle_gauge import AngleGauge
 from ui.widgets.exercise_button import ExerciseButton
@@ -48,6 +49,8 @@ class MainWindow(QMainWindow):
         self._thread: CameraThread | None = None
         self._ex_buttons: list[ExerciseButton] = []
         self._current_backend: str = "mediapipe"
+        self._current_source:  str = SOURCE_CAMERA
+        self._current_monitor: int = 1   # 1-based mss monitor index
         self._current_ex_idx:  int = 0
 
         self._build_ui()
@@ -107,6 +110,32 @@ class MainWindow(QMainWindow):
         self._btn_yolo.clicked.connect(lambda: self._on_backend_changed("yolo"))
         lay.addWidget(toggle_wrap)
         self._update_backend_buttons()
+
+        # ── Source toggle ─────────────────────────────────────────────────────
+        src_wrap = QFrame()
+        src_wrap.setStyleSheet(
+            "QFrame { background: #1e293b; border-radius: 8px; "
+            "border: 1px solid #334155; }"
+        )
+        src_lay = QHBoxLayout(src_wrap)
+        src_lay.setContentsMargins(3, 3, 3, 3)
+        src_lay.setSpacing(2)
+
+        self._btn_src_camera = QPushButton("📷 Camera")
+        self._btn_src_video  = QPushButton("📁 Video")
+        self._btn_src_screen = QPushButton("🖥 Screen")
+        for btn in (self._btn_src_camera, self._btn_src_video, self._btn_src_screen):
+            btn.setFixedHeight(28)
+            btn.setCursor(Qt.CursorShape.PointingHandCursor)
+            src_lay.addWidget(btn)
+
+        self._btn_src_camera.clicked.connect(lambda: self._on_source_changed(SOURCE_CAMERA))
+        self._btn_src_video.clicked.connect(self._on_source_video_clicked)
+        self._btn_src_screen.clicked.connect(self._on_source_screen_clicked)
+
+        lay.addSpacing(10)
+        lay.addWidget(src_wrap)
+        self._update_source_buttons()
         return bar
 
     def _build_sidebar(self) -> QWidget:
@@ -260,7 +289,12 @@ class MainWindow(QMainWindow):
     #  CAMERA THREAD
     # ══════════════════════════════════════════════════════════════
     def _start_camera(self) -> None:
-        self._thread = CameraThread(backend=self._current_backend, parent=self)
+        self._thread = CameraThread(
+            backend=self._current_backend,
+            source=self._current_source,
+            monitor_index=self._current_monitor,
+            parent=self,
+        )
         self._thread.frame_ready.connect(self._on_frame_ready)
         self._thread.stats_updated.connect(self._on_stats_updated)
         self._thread.state_changed.connect(self._on_state_changed)
@@ -288,11 +322,7 @@ class MainWindow(QMainWindow):
             return
         self._current_backend = backend
         self._update_backend_buttons()
-        if self._thread:
-            self._thread.stop()
-            self._thread.wait(3000)
-            self._thread = None
-        self._start_camera()
+        self._restart_thread()
 
     def _update_backend_buttons(self) -> None:
         _ACTIVE   = ("background: #3b82f6; color: #ffffff; border-radius: 6px;"
@@ -305,6 +335,91 @@ class MainWindow(QMainWindow):
         self._btn_yolo.setStyleSheet(
             _ACTIVE if self._current_backend == "yolo" else _INACTIVE
         )
+
+    # ── Source switching ───────────────────────────────────────────────────────
+    def _on_source_video_clicked(self) -> None:
+        """Open a file dialog; only switch if the user picks a file."""
+        path, _ = QFileDialog.getOpenFileName(
+            self,
+            "Select video file",
+            "",
+            "Video files (*.mp4 *.avi *.mov *.mkv *.wmv *.flv *.webm);;"
+            "All files (*)",
+        )
+        if path:
+            self._on_source_changed(path)
+
+    def _on_source_screen_clicked(self) -> None:
+        """Pick a monitor then switch to screen-capture mode."""
+        from PyQt6.QtWidgets import QInputDialog  # local import — only needed here
+        monitors = list_monitors()
+        if not monitors:
+            # mss not installed or only one monitor — switch directly
+            self._current_monitor = 1
+            self._on_source_changed(SOURCE_SCREEN)
+            return
+
+        if len(monitors) == 1:
+            self._current_monitor = 1
+            self._on_source_changed(SOURCE_SCREEN)
+            return
+
+        # Build a descriptive label per monitor
+        items = [
+            f"Monitor {m['index']}  —  {m['width']}×{m['height']}  "
+            f"(x={m['left']}, y={m['top']})"
+            for m in monitors
+        ]
+        # Pre-select the currently active monitor
+        current_label = items[max(0, self._current_monitor - 1)]
+        choice, ok = QInputDialog.getItem(
+            self,
+            "Select monitor",
+            "Which monitor should be captured?",
+            items,
+            items.index(current_label),
+            False,   # not editable
+        )
+        if ok:
+            # Parse the chosen monitor index from the label
+            self._current_monitor = int(choice.split()[1])
+            self._on_source_changed(SOURCE_SCREEN)
+
+    def _on_source_changed(self, source: str) -> None:
+        if source == self._current_source:
+            return
+        self._current_source = source
+        self._update_source_buttons()
+        self._restart_thread()
+
+    def _update_source_buttons(self) -> None:
+        _ACTIVE   = ("background: #0ea5e9; color: #ffffff; border-radius: 6px;"
+                     " font: 600 11px 'Segoe UI'; padding: 0 12px; border: none;")
+        _INACTIVE = ("background: transparent; color: #64748b; border-radius: 6px;"
+                     " font: 600 11px 'Segoe UI'; padding: 0 12px; border: none;")
+        self._btn_src_camera.setStyleSheet(
+            _ACTIVE if self._current_source == SOURCE_CAMERA else _INACTIVE
+        )
+        # Video file: active whenever source is not camera and not screen
+        self._btn_src_video.setStyleSheet(
+            _ACTIVE
+            if self._current_source not in (SOURCE_CAMERA, SOURCE_SCREEN)
+            else _INACTIVE
+        )
+        is_screen = self._current_source == SOURCE_SCREEN
+        screen_label = (
+            f"🖥 Screen {self._current_monitor}" if is_screen else "🖥 Screen"
+        )
+        self._btn_src_screen.setText(screen_label)
+        self._btn_src_screen.setStyleSheet(_ACTIVE if is_screen else _INACTIVE)
+
+    # ── Shared thread restart ─────────────────────────────────────────────────
+    def _restart_thread(self) -> None:
+        if self._thread:
+            self._thread.stop()
+            self._thread.wait(3000)
+            self._thread = None
+        self._start_camera()
 
     def _on_frame_ready(self, frame: np.ndarray) -> None:
         h, w, ch  = frame.shape
