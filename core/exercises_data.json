@@ -1,0 +1,431 @@
+[
+  {
+    "id": 0,
+    "name": "Squat",
+    "joint": ["LEFT_HIP", "LEFT_KNEE", "LEFT_ANKLE"],
+    "down_max": 100,
+    "up_min": 160,
+    "tip": "Keep your back straight and knees over toes.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 100, "message": "✓ Good depth!",        "color": "#22c55e" },
+      { "angle_min": 100, "angle_max": 160, "message": "↓ Go lower — aim 90°", "color": "#f59e0b" },
+      { "angle_min": 160, "angle_max": 180, "message": "↑ Stand up fully",      "color": "#94a3b8" }
+    ]
+  },
+  {
+    "id": 1,
+    "name": "Bicep Curl",
+    "joint": ["LEFT_SHOULDER", "LEFT_ELBOW", "LEFT_WRIST"],
+    "down_max": 60,
+    "up_min": 140,
+    "tip": "Keep your elbow close to your torso.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 60,  "message": "✓ Good curl!",          "color": "#22c55e" },
+      { "angle_min": 60,  "angle_max": 140, "message": "↕ Full range of motion", "color": "#f59e0b" },
+      { "angle_min": 140, "angle_max": 180, "message": "✓ Good extension!",      "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Push-up",
+    "joint": ["LEFT_SHOULDER", "LEFT_ELBOW", "LEFT_WRIST"],
+    "down_max": 90,
+    "up_min": 160,
+    "tip": "Keep your core tight and body straight.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 90,  "message": "✓ Good depth!",           "color": "#22c55e" },
+      { "angle_min": 90,  "angle_max": 160, "message": "↓ Lower your chest more",  "color": "#f59e0b" },
+      { "angle_min": 160, "angle_max": 180, "message": "↑ Push up fully",          "color": "#94a3b8" }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Lateral Raise",
+    "joint": ["LEFT_HIP", "LEFT_SHOULDER", "LEFT_ELBOW"],
+    "down_max": 40,
+    "up_min": 80,
+    "tip": "Raise to shoulder height with slight elbow bend.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 40,  "message": "↑ Raise to shoulder level", "color": "#f59e0b" },
+      { "angle_min": 40,  "angle_max": 80,  "message": "↕ Keep going",               "color": "#f59e0b" },
+      { "angle_min": 80,  "angle_max": 180, "message": "✓ Good height!",              "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Overhead Press",
+    "joint": ["LEFT_ELBOW", "LEFT_SHOULDER", "LEFT_HIP"],
+    "down_max": 80,
+    "up_min": 160,
+    "tip": "Press directly overhead. Keep core braced.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 80,  "message": "↑ Press all the way up!", "color": "#f59e0b" },
+      { "angle_min": 80,  "angle_max": 160, "message": "↕ Keep pressing",          "color": "#f59e0b" },
+      { "angle_min": 160, "angle_max": 180, "message": "✓ Full lockout!",          "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Tricep Extension",
+    "joint": ["LEFT_SHOULDER", "LEFT_ELBOW", "LEFT_WRIST"],
+    "down_max": 70,
+    "up_min": 155,
+    "tip": "Keep upper arm vertical. Only the forearm should move.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 70,  "message": "✓ Good stretch!",        "color": "#22c55e" },
+      { "angle_min": 70,  "angle_max": 155, "message": "↕ Full range of motion", "color": "#f59e0b" },
+      { "angle_min": 155, "angle_max": 180, "message": "✓ Full extension!",      "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Front Raise",
+    "joint": ["LEFT_HIP", "LEFT_SHOULDER", "LEFT_ELBOW"],
+    "down_max": 50,
+    "up_min": 85,
+    "tip": "Raise arm to shoulder height. Avoid using momentum.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 50,  "message": "↑ Raise to shoulder level", "color": "#f59e0b" },
+      { "angle_min": 50,  "angle_max": 85,  "message": "↕ Almost there",             "color": "#f59e0b" },
+      { "angle_min": 85,  "angle_max": 180, "message": "✓ Good height!",             "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Lunge",
+    "joint": ["LEFT_HIP", "LEFT_KNEE", "LEFT_ANKLE"],
+    "down_max": 95,
+    "up_min": 165,
+    "tip": "Step forward so front knee stays above ankle.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 95,  "message": "✓ Good lunge depth!",   "color": "#22c55e" },
+      { "angle_min": 95,  "angle_max": 165, "message": "↓ Lower your back knee", "color": "#f59e0b" },
+      { "angle_min": 165, "angle_max": 180, "message": "↑ Stand up fully",       "color": "#94a3b8" }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Shoulder Tap",
+    "joint": ["LEFT_SHOULDER", "LEFT_ELBOW", "LEFT_WRIST"],
+    "down_max": 100,
+    "up_min": 160,
+    "tip": "From plank, tap opposite shoulder. Keep hips level.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 100, "message": "✓ Arm bent — tap!",       "color": "#22c55e" },
+      { "angle_min": 100, "angle_max": 160, "message": "↕ Transition",             "color": "#94a3b8" },
+      { "angle_min": 160, "angle_max": 180, "message": "✓ Arm extended — plank!", "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Hammer Curl",
+    "joint": ["LEFT_SHOULDER", "LEFT_ELBOW", "LEFT_WRIST"],
+    "down_max": 60,
+    "up_min": 140,
+    "tip": "Neutral grip (thumbs up). Curl to shoulder, lower fully.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 60,  "message": "✓ Good curl!",           "color": "#22c55e" },
+      { "angle_min": 60,  "angle_max": 140, "message": "↕ Full range of motion", "color": "#f59e0b" },
+      { "angle_min": 140, "angle_max": 180, "message": "✓ Full extension!",      "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Reverse Curl",
+    "joint": ["LEFT_SHOULDER", "LEFT_ELBOW", "LEFT_WRIST"],
+    "down_max": 65,
+    "up_min": 140,
+    "tip": "Overhand grip. Curl wrists up as you raise the bar.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 65,  "message": "✓ Top position!",       "color": "#22c55e" },
+      { "angle_min": 65,  "angle_max": 140, "message": "↕ Control the descent", "color": "#f59e0b" },
+      { "angle_min": 140, "angle_max": 180, "message": "✓ Full extension!",     "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Concentration Curl",
+    "joint": ["LEFT_SHOULDER", "LEFT_ELBOW", "LEFT_WRIST"],
+    "down_max": 50,
+    "up_min": 145,
+    "tip": "Elbow braced on inner thigh. Slow, full contraction.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 50,  "message": "✓ Full contraction!",   "color": "#22c55e" },
+      { "angle_min": 50,  "angle_max": 145, "message": "↕ Controlled range",    "color": "#f59e0b" },
+      { "angle_min": 145, "angle_max": 180, "message": "✓ Arm fully extended!", "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Overhead Tricep Extension",
+    "joint": ["LEFT_SHOULDER", "LEFT_ELBOW", "LEFT_WRIST"],
+    "down_max": 75,
+    "up_min": 155,
+    "tip": "Keep elbows close. Lower weight behind head, extend overhead.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 75,  "message": "↑ Extend overhead",   "color": "#f59e0b" },
+      { "angle_min": 75,  "angle_max": 155, "message": "↕ Almost extended",    "color": "#f59e0b" },
+      { "angle_min": 155, "angle_max": 180, "message": "✓ Arms extended!",     "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Skull Crusher",
+    "joint": ["LEFT_SHOULDER", "LEFT_ELBOW", "LEFT_WRIST"],
+    "down_max": 70,
+    "up_min": 158,
+    "tip": "Lying flat, lower bar to forehead. Keep upper arms vertical.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 70,  "message": "↑ Press the bar up",  "color": "#f59e0b" },
+      { "angle_min": 70,  "angle_max": 158, "message": "↕ Control descent",    "color": "#f59e0b" },
+      { "angle_min": 158, "angle_max": 180, "message": "✓ Arms extended!",     "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 14,
+    "name": "Tricep Kickback",
+    "joint": ["LEFT_SHOULDER", "LEFT_ELBOW", "LEFT_WRIST"],
+    "down_max": 80,
+    "up_min": 155,
+    "tip": "Hinge forward, upper arm parallel to floor. Extend fully.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 80,  "message": "↑ Extend your arm back", "color": "#f59e0b" },
+      { "angle_min": 80,  "angle_max": 155, "message": "↕ Almost there",          "color": "#f59e0b" },
+      { "angle_min": 155, "angle_max": 180, "message": "✓ Full extension!",       "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 15,
+    "name": "Incline Push-up",
+    "joint": ["LEFT_SHOULDER", "LEFT_ELBOW", "LEFT_WRIST"],
+    "down_max": 85,
+    "up_min": 155,
+    "tip": "Hands elevated on bench. Lower chest to surface, press up.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 85,  "message": "↑ Press back up",     "color": "#f59e0b" },
+      { "angle_min": 85,  "angle_max": 155, "message": "↕ Almost there",       "color": "#f59e0b" },
+      { "angle_min": 155, "angle_max": 180, "message": "✓ Full extension!",    "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 16,
+    "name": "Diamond Push-up",
+    "joint": ["LEFT_SHOULDER", "LEFT_ELBOW", "LEFT_WRIST"],
+    "down_max": 80,
+    "up_min": 155,
+    "tip": "Hands close together forming a diamond. Elbows track back.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 80,  "message": "↑ Press up explosively", "color": "#f59e0b" },
+      { "angle_min": 80,  "angle_max": 155, "message": "↕ Full range",            "color": "#f59e0b" },
+      { "angle_min": 155, "angle_max": 180, "message": "✓ Triceps locked out!",   "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 17,
+    "name": "Arnold Press",
+    "joint": ["LEFT_ELBOW", "LEFT_SHOULDER", "LEFT_HIP"],
+    "down_max": 75,
+    "up_min": 150,
+    "tip": "Start with palms facing you, rotate outward as you press up.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 75,  "message": "↑ Press and rotate up", "color": "#f59e0b" },
+      { "angle_min": 75,  "angle_max": 150, "message": "↕ Extend overhead",      "color": "#f59e0b" },
+      { "angle_min": 150, "angle_max": 180, "message": "✓ Arms overhead!",       "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 18,
+    "name": "Upright Row",
+    "joint": ["LEFT_HIP", "LEFT_SHOULDER", "LEFT_ELBOW"],
+    "down_max": 60,
+    "up_min": 150,
+    "tip": "Pull elbows high and wide. Bar stays close to body.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 60,  "message": "✓ Elbows at peak!",      "color": "#22c55e" },
+      { "angle_min": 60,  "angle_max": 150, "message": "↕ Control the way down", "color": "#f59e0b" },
+      { "angle_min": 150, "angle_max": 180, "message": "✓ Arms down — start!",   "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 19,
+    "name": "Romanian Deadlift",
+    "joint": ["LEFT_SHOULDER", "LEFT_HIP", "LEFT_KNEE"],
+    "down_max": 95,
+    "up_min": 165,
+    "tip": "Soft knees, push hips back. Feel hamstring stretch.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 95,  "message": "↑ Drive hips forward",           "color": "#f59e0b" },
+      { "angle_min": 95,  "angle_max": 165, "message": "↕ Hinge deeper or stand tall",   "color": "#f59e0b" },
+      { "angle_min": 165, "angle_max": 180, "message": "✓ Hips locked out!",              "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 20,
+    "name": "Good Morning",
+    "joint": ["LEFT_SHOULDER", "LEFT_HIP", "LEFT_KNEE"],
+    "down_max": 90,
+    "up_min": 160,
+    "tip": "Bar on upper back. Hinge at hips until torso is parallel to floor.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 90,  "message": "↑ Rise back up",      "color": "#f59e0b" },
+      { "angle_min": 90,  "angle_max": 160, "message": "↕ Controlled hinge",   "color": "#f59e0b" },
+      { "angle_min": 160, "angle_max": 180, "message": "✓ Standing tall!",     "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 21,
+    "name": "Hip Thrust",
+    "joint": ["LEFT_SHOULDER", "LEFT_HIP", "LEFT_KNEE"],
+    "down_max": 100,
+    "up_min": 155,
+    "tip": "Upper back on bench. Drive hips up, squeeze glutes at top.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 100, "message": "↓ Lower back down",       "color": "#94a3b8" },
+      { "angle_min": 100, "angle_max": 155, "message": "↑ Drive hips higher",     "color": "#f59e0b" },
+      { "angle_min": 155, "angle_max": 180, "message": "✓ Full glute extension!", "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 22,
+    "name": "Sumo Squat",
+    "joint": ["LEFT_HIP", "LEFT_KNEE", "LEFT_ANKLE"],
+    "down_max": 90,
+    "up_min": 160,
+    "tip": "Wide stance, toes turned out. Knees track over toes.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 90,  "message": "✓ Great depth!",     "color": "#22c55e" },
+      { "angle_min": 90,  "angle_max": 160, "message": "↓ Squat lower",      "color": "#f59e0b" },
+      { "angle_min": 160, "angle_max": 180, "message": "✓ Standing tall!",   "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 23,
+    "name": "Bulgarian Split Squat",
+    "joint": ["LEFT_HIP", "LEFT_KNEE", "LEFT_ANKLE"],
+    "down_max": 95,
+    "up_min": 165,
+    "tip": "Rear foot elevated on bench. Front knee stays over ankle.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 95,  "message": "✓ Good depth!",     "color": "#22c55e" },
+      { "angle_min": 95,  "angle_max": 165, "message": "↓ Lower your hips", "color": "#f59e0b" },
+      { "angle_min": 165, "angle_max": 180, "message": "↑ Stand up fully",  "color": "#94a3b8" }
+    ]
+  },
+  {
+    "id": 24,
+    "name": "Jump Squat",
+    "joint": ["LEFT_HIP", "LEFT_KNEE", "LEFT_ANKLE"],
+    "down_max": 100,
+    "up_min": 165,
+    "tip": "Squat deep then explode up. Land softly with bent knees.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 100, "message": "✓ Good depth — jump!",        "color": "#22c55e" },
+      { "angle_min": 100, "angle_max": 165, "message": "↓ Squat lower before jumping", "color": "#f59e0b" },
+      { "angle_min": 165, "angle_max": 180, "message": "✓ Land and reset",             "color": "#94a3b8" }
+    ]
+  },
+  {
+    "id": 25,
+    "name": "Step Up",
+    "joint": ["LEFT_HIP", "LEFT_KNEE", "LEFT_ANKLE"],
+    "down_max": 90,
+    "up_min": 165,
+    "tip": "Step fully onto the box, drive through heel to stand.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 90,  "message": "↑ Drive up through the heel", "color": "#f59e0b" },
+      { "angle_min": 90,  "angle_max": 165, "message": "↕ Almost standing",            "color": "#f59e0b" },
+      { "angle_min": 165, "angle_max": 180, "message": "✓ Fully extended!",            "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 26,
+    "name": "Mountain Climber",
+    "joint": ["LEFT_HIP", "LEFT_KNEE", "LEFT_ANKLE"],
+    "down_max": 65,
+    "up_min": 150,
+    "tip": "Keep hips level. Drive knee toward chest explosively.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 65,  "message": "✓ Knee driven in!",       "color": "#22c55e" },
+      { "angle_min": 65,  "angle_max": 150, "message": "↕ Extend leg back fully", "color": "#f59e0b" },
+      { "angle_min": 150, "angle_max": 180, "message": "✓ Leg fully extended!",   "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 27,
+    "name": "Glute Bridge",
+    "joint": ["LEFT_SHOULDER", "LEFT_HIP", "LEFT_KNEE"],
+    "down_max": 100,
+    "up_min": 150,
+    "tip": "Lying on back, feet flat. Drive hips up and squeeze glutes.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 100, "message": "↓ Lower hips to reset",   "color": "#94a3b8" },
+      { "angle_min": 100, "angle_max": 150, "message": "↑ Drive hips higher",     "color": "#f59e0b" },
+      { "angle_min": 150, "angle_max": 180, "message": "✓ Full hip extension!",   "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 28,
+    "name": "Donkey Kick",
+    "joint": ["LEFT_HIP", "LEFT_KNEE", "LEFT_ANKLE"],
+    "down_max": 100,
+    "up_min": 155,
+    "tip": "On all fours. Keep core tight. Kick leg back and up, squeeze glute.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 100, "message": "↑ Kick leg further back", "color": "#f59e0b" },
+      { "angle_min": 100, "angle_max": 155, "message": "↕ Extend fully",          "color": "#f59e0b" },
+      { "angle_min": 155, "angle_max": 180, "message": "✓ Full extension!",       "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 29,
+    "name": "Bent Over Row",
+    "joint": ["LEFT_SHOULDER", "LEFT_ELBOW", "LEFT_WRIST"],
+    "down_max": 75,
+    "up_min": 155,
+    "tip": "Hinge at hips, pull elbow past torso. Squeeze shoulder blade.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 75,  "message": "✓ Elbow pulled back!",    "color": "#22c55e" },
+      { "angle_min": 75,  "angle_max": 155, "message": "↕ Full range of motion",  "color": "#f59e0b" },
+      { "angle_min": 155, "angle_max": 180, "message": "✓ Arm extended — ready!", "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 30,
+    "name": "Pull-up",
+    "joint": ["LEFT_SHOULDER", "LEFT_ELBOW", "LEFT_WRIST"],
+    "down_max": 75,
+    "up_min": 155,
+    "tip": "Dead hang start. Pull chin above bar, lower with control.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 75,  "message": "✓ Chin above bar!",   "color": "#22c55e" },
+      { "angle_min": 75,  "angle_max": 155, "message": "↕ Full range",        "color": "#f59e0b" },
+      { "angle_min": 155, "angle_max": 180, "message": "✓ Full hang — pull!", "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 31,
+    "name": "Lat Pulldown",
+    "joint": ["LEFT_SHOULDER", "LEFT_ELBOW", "LEFT_WRIST"],
+    "down_max": 75,
+    "up_min": 155,
+    "tip": "Pull bar to upper chest. Lean slightly back. Control the return.",
+    "feedback": [
+      { "angle_min": 0,   "angle_max": 75,  "message": "✓ Bar pulled to chest!", "color": "#22c55e" },
+      { "angle_min": 75,  "angle_max": 155, "message": "↕ Control the eccentric","color": "#f59e0b" },
+      { "angle_min": 155, "angle_max": 180, "message": "✓ Arms extended above!", "color": "#22c55e" }
+    ]
+  },
+  {
+    "id": 32,
+    "name": "Calf Raise",
+    "joint": ["LEFT_KNEE", "LEFT_ANKLE", "LEFT_FOOT_INDEX"],
+    "down_max": 75,
+    "up_min": 88,
+    "tip": "Rise on tiptoes, pause at top. Lower heels below step for full ROM.",
+    "feedback": [
+      { "angle_min": 0,  "angle_max": 75,  "message": "✓ Peak contraction!",      "color": "#22c55e" },
+      { "angle_min": 75, "angle_max": 88,  "message": "↕ Rise higher on tiptoes", "color": "#f59e0b" },
+      { "angle_min": 88, "angle_max": 180, "message": "✓ Heels down — repeat!",   "color": "#22c55e" }
+    ]
+  }
+]
