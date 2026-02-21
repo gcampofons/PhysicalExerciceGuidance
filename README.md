@@ -14,9 +14,9 @@ A real-time exercise guidance application that uses your webcam and AI pose esti
 - **Automatic rep counting** — UP/DOWN state machine triggered by joint angle thresholds
 - **Live form feedback** — colour-coded coaching tips per exercise (green = good, amber = needs improvement, red = warning)
 - **Visibility guard** — rep counting is frozen when joints move out of frame to prevent phantom reps
-- **9 exercises out of the box** — Squat, Bicep Curl, Push-up, Lateral Raise, Overhead Press, Tricep Extension, Front Raise, Lunge, Shoulder Tap
+- **33 exercises out of the box** — covering squats, curls, presses, rows, hinges, lunges, plyometrics and more (full list below)
 - **Professional dark UI** — built with PyQt6; camera feed is a component inside the layout, not a raw OpenCV window
-- **Easily extensible** — adding a new exercise is 10 lines in `core/exercises.py`, nothing else changes
+- **JSON-driven exercise registry** — add or edit exercises in `core/exercises_data.json` with no Python required
 
 ---
 
@@ -85,7 +85,8 @@ PhysicalExerciceGuidance/
 ├── core/                          # Pure domain logic — no UI, no OpenCV
 │   ├── config.py                  # Paths, camera settings, thresholds
 │   ├── landmarks.py               # 33 landmark index constants + skeleton connections
-│   ├── exercises.py               # Exercise dataclass + REGISTRY
+│   ├── exercises.py               # Exercise dataclass + JSON loader → REGISTRY
+│   ├── exercises_data.json        # All 33 exercise definitions (edit here to add/modify)
 │   └── geometry.py                # angle_between(), landmark_xy()
 │
 ├── detection/                     # ML / computer vision layer
@@ -107,25 +108,65 @@ PhysicalExerciceGuidance/
 
 ## Adding a New Exercise
 
-Open `core/exercises.py` and append a `_register()` call:
+Edit `core/exercises_data.json` and append a new entry — no Python required:
 
-```python
-from core.landmarks import RIGHT_HIP, RIGHT_KNEE, RIGHT_ANKLE
-
-_register(Exercise(
-    id=9, name="Bulgarian Split Squat",
-    joint=(RIGHT_HIP, RIGHT_KNEE, RIGHT_ANKLE),
-    down_max=100, up_min=160,
-    tip="Keep your front knee behind your toes.",
-    feedback=[
-        FeedbackRule(0,   100, "✓ Good depth!",        "#22c55e"),
-        FeedbackRule(100, 160, "↓ Go lower",            "#f59e0b"),
-        FeedbackRule(160, 180, "↑ Stand up fully",      "#94a3b8"),
-    ],
-))
+```json
+{
+  "id": 33,
+  "name": "My Exercise",
+  "joint": ["LEFT_HIP", "LEFT_KNEE", "LEFT_ANKLE"],
+  "down_max": 100,
+  "up_min": 160,
+  "tip": "Keep your front knee behind your toes.",
+  "feedback": [
+    { "angle_min": 0,   "angle_max": 100, "message": "✓ Good depth!",   "color": "#22c55e" },
+    { "angle_min": 100, "angle_max": 160, "message": "↓ Go lower",       "color": "#f59e0b" },
+    { "angle_min": 160, "angle_max": 180, "message": "↑ Stand up fully", "color": "#94a3b8" }
+  ]
+}
 ```
 
-The button appears in the sidebar automatically — no other file needs to be changed.
+Joint names must match a constant in `core/landmarks.py` (e.g. `LEFT_HIP`, `RIGHT_ELBOW`). The button appears in the sidebar automatically.
+
+---
+
+## Exercise List
+
+| # | Exercise | Category |
+|---|----------|----------|
+| 0 | Squat | Legs |
+| 1 | Bicep Curl | Arms |
+| 2 | Push-up | Push |
+| 3 | Lateral Raise | Shoulders |
+| 4 | Overhead Press | Shoulders |
+| 5 | Tricep Extension | Arms |
+| 6 | Front Raise | Shoulders |
+| 7 | Lunge | Legs |
+| 8 | Shoulder Tap | Core |
+| 9 | Hammer Curl | Arms |
+| 10 | Reverse Curl | Arms |
+| 11 | Concentration Curl | Arms |
+| 12 | Overhead Tricep Extension | Arms |
+| 13 | Skull Crusher | Arms |
+| 14 | Tricep Kickback | Arms |
+| 15 | Incline Push-up | Push |
+| 16 | Diamond Push-up | Push |
+| 17 | Arnold Press | Shoulders |
+| 18 | Upright Row | Shoulders |
+| 19 | Romanian Deadlift | Hip Hinge |
+| 20 | Good Morning | Hip Hinge |
+| 21 | Hip Thrust | Glutes |
+| 22 | Sumo Squat | Legs |
+| 23 | Bulgarian Split Squat | Legs |
+| 24 | Jump Squat | Plyometrics |
+| 25 | Step Up | Legs |
+| 26 | Mountain Climber | Cardio / Core |
+| 27 | Glute Bridge | Glutes |
+| 28 | Donkey Kick | Glutes |
+| 29 | Bent Over Row | Pull |
+| 30 | Pull-up | Pull |
+| 31 | Lat Pulldown | Pull |
+| 32 | Calf Raise | Legs |
 
 ---
 
