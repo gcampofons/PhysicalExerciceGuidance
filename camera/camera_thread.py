@@ -135,7 +135,6 @@ class CameraThread(QThread):
     def _run_capture(
         self, cap: cv2.VideoCapture, flip: bool, is_file: bool
     ) -> None:
-        src_label  = "CAM" if not is_file else "FILE"
         start_time = time.time()
         detector   = self._detector
 
@@ -151,7 +150,7 @@ class CameraThread(QThread):
                 frame = cv2.flip(frame, 1)
             frame = cv2.resize(frame, (CAMERA_WIDTH, CAMERA_HEIGHT))
             ts_ms = int((time.time() - start_time) * 1000)
-            self._process_frame(frame, detector, ts_ms, src_label)
+            self._process_frame(frame, detector, ts_ms)
 
         cap.release()
 
@@ -176,13 +175,12 @@ class CameraThread(QThread):
             # monitors[0] is the combined virtual desktop; real monitors start at 1
             idx     = max(1, min(self._monitor_index, len(sct.monitors) - 1))
             monitor = sct.monitors[idx]
-            scr_label = f"SCR{idx}"
             while self._running:
                 img   = np.array(sct.grab(monitor))              # BGRA
                 frame = cv2.cvtColor(img, cv2.COLOR_BGRA2BGR)
                 frame = cv2.resize(frame, (CAMERA_WIDTH, CAMERA_HEIGHT))
                 ts_ms = int((time.time() - start_time) * 1000)
-                self._process_frame(frame, detector, ts_ms, scr_label)
+                self._process_frame(frame, detector, ts_ms)
 
     # ── Shared detection + overlay + emit pipeline ────────────────────────────
     def _process_frame(
@@ -190,7 +188,6 @@ class CameraThread(QThread):
         frame:     np.ndarray,
         detector,
         ts_ms:     int,
-        src_label: str,
     ) -> None:
         h, w = frame.shape[:2]
         landmarks = detector.detect(frame, ts_ms)
@@ -240,16 +237,6 @@ class CameraThread(QThread):
             except Exception:
                 feedback_msg = "Move into frame"
 
-        # ── HUD overlay: [BACKEND|SOURCE] ─────────────────────────────────────
-        label = f"[MEDIAPIPE|{src_label}]"
-        cv2.putText(
-            frame, label,
-            (8, 22),
-            cv2.FONT_HERSHEY_SIMPLEX, 0.58,
-            (255, 180, 0),
-            2, cv2.LINE_AA,
-        )
-        # ─────────────────────────────────────────────────────────────────────
         self.frame_ready.emit(frame.copy())
         self.stats_updated.emit(angle, feedback_msg, feedback_color, self._counter.reps)
         self.state_changed.emit(self._counter.state)

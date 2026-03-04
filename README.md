@@ -11,7 +11,6 @@ A real-time exercise guidance application that uses your webcam and AI pose esti
 ## Features
 
 - **MediaPipe pose-estimation backend** — stable 33-keypoint tracking tuned for exercise feedback
-- **Backend label on frame** — the active backend (`[MEDIAPIPE]`) is stamped directly onto the camera feed
 - **Automatic rep counting** — UP/DOWN state machine triggered by joint angle thresholds
 - **Live form feedback** — colour-coded coaching tips per exercise (green = good, amber = needs improvement, red = warning)
 - **Visibility guard** — rep counting is frozen when joints move out of frame to prevent phantom reps
@@ -23,9 +22,9 @@ A real-time exercise guidance application that uses your webcam and AI pose esti
 
 ## Screenshots
 
-| Menu | Exercise in progress |
+| Romanian Deadlift (hinge) | Romanian Deadlift (stand) |
 |---|---|
-| Exercise list with tips | Skeleton overlay + angle gauge + rep counter |
+| ![Romanian Deadlift - hinge](assets/screenshots/rd-hinge.png) | ![Romanian Deadlift - stand](assets/screenshots/rd-stand.png) |
 
 ---
 
@@ -55,6 +54,8 @@ pip install -r requirements.txt
 
 > **MediaPipe** — the pose landmarker model (~5 MB) is downloaded automatically on first launch and cached at `assets/models/pose_landmarker_lite.task`.
 
+> Optional: for screen capture mode, install `mss` with `pip install mss`.
+
 ---
 
 ## Usage
@@ -81,8 +82,11 @@ PhysicalExerciceGuidance/
 ├── requirements.txt
 │
 ├── assets/
-│   └── models/
-│       └── pose_landmarker_lite.task   # Auto-downloaded on first run
+│   ├── models/
+│   │   └── pose_landmarker_lite.task   # Auto-downloaded on first run
+│   └── screenshots/
+│       ├── rd-hinge.png
+│       └── rd-stand.png
 │
 ├── core/                          # Pure domain logic — no UI, no OpenCV
 │   ├── config.py                  # Paths, camera settings, thresholds
@@ -193,9 +197,6 @@ geometry.angle_between()       ← angle at the middle joint (A–B–C)
     ▼
 RepCounter.update()            ← UP/DOWN state machine
     │  reps, state
-    ▼
-cv2.putText  ─────────────────► [MEDIAPIPE] label stamped on frame
-    │
     ▼
 Qt signals ──────────────────► MainWindow slots (frame, stats, feedback)
 ```
