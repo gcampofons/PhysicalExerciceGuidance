@@ -22,9 +22,9 @@ A real-time exercise guidance application that uses your webcam and AI pose esti
 
 ## Screenshots
 
-| Romanian Deadlift (hinge) | Romanian Deadlift (stand) |
+| Romanian Deadlift (bottom/down phase) | Romanian Deadlift (top/up phase) |
 |---|---|
-| ![Romanian Deadlift - hinge](assets/screenshots/rd-hinge.png) | ![Romanian Deadlift - stand](assets/screenshots/rd-stand.png) |
+| ![Romanian Deadlift - bottom/down phase](assets/screenshots/rd-hinge.png) | ![Romanian Deadlift - top/up phase](assets/screenshots/rd-stand.png) |
 
 ---
 
