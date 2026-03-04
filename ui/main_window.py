@@ -48,7 +48,6 @@ class MainWindow(QMainWindow):
 
         self._thread: CameraThread | None = None
         self._ex_buttons: list[ExerciseButton] = []
-        self._current_backend: str = "mediapipe"
         self._current_source:  str = SOURCE_CAMERA
         self._current_monitor: int = 1   # 1-based mss monitor index
         self._current_ex_idx:  int = 0
@@ -89,34 +88,15 @@ class MainWindow(QMainWindow):
         lay.addWidget(logo)
         lay.addStretch()
 
-        # ── Backend toggle ────────────────────────────────────────────────────
-        toggle_wrap = QFrame()
-        toggle_wrap.setStyleSheet(
-            "QFrame { background: #1e293b; border-radius: 8px; "
-            "border: 1px solid #334155; }"
+        # ── Backend badge (fixed) ─────────────────────────────────────────────
+        backend_badge = QLabel("⚡ MediaPipe")
+        backend_badge.setFixedHeight(28)
+        backend_badge.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        backend_badge.setStyleSheet(
+            "background: #3b82f6; color: #ffffff; border-radius: 6px;"
+            " font: 600 11px 'Segoe UI'; padding: 0 12px;"
         )
-        toggle_lay = QHBoxLayout(toggle_wrap)
-        toggle_lay.setContentsMargins(3, 3, 3, 3)
-        toggle_lay.setSpacing(2)
-
-        self._btn_mediapipe = QPushButton("⚡ MediaPipe")
-        self._btn_yolo      = QPushButton("🎯 YOLOv8")
-        self._btn_movenet   = QPushButton("🏃 MoveNet")
-        self._btn_rtmpose   = QPushButton("🔬 RTMPose")
-        for btn in (
-            self._btn_mediapipe, self._btn_yolo,
-            self._btn_movenet,   self._btn_rtmpose,
-        ):
-            btn.setFixedHeight(28)
-            btn.setCursor(Qt.CursorShape.PointingHandCursor)
-            toggle_lay.addWidget(btn)
-
-        self._btn_mediapipe.clicked.connect(lambda: self._on_backend_changed("mediapipe"))
-        self._btn_yolo.clicked.connect(lambda: self._on_backend_changed("yolo"))
-        self._btn_movenet.clicked.connect(lambda: self._on_backend_changed("movenet_lightning"))
-        self._btn_rtmpose.clicked.connect(lambda: self._on_backend_changed("rtmpose_s"))
-        lay.addWidget(toggle_wrap)
-        self._update_backend_buttons()
+        lay.addWidget(backend_badge)
 
         # ── Source toggle ─────────────────────────────────────────────────────
         src_wrap = QFrame()
@@ -297,7 +277,6 @@ class MainWindow(QMainWindow):
     # ══════════════════════════════════════════════════════════════
     def _start_camera(self) -> None:
         self._thread = CameraThread(
-            backend=self._current_backend,
             source=self._current_source,
             monitor_index=self._current_monitor,
             parent=self,
@@ -322,33 +301,6 @@ class MainWindow(QMainWindow):
     def _on_reset_reps(self) -> None:
         if self._thread:
             self._thread.reset_reps()
-
-    # ── Backend switching ──────────────────────────────────────────────────────
-    def _on_backend_changed(self, backend: str) -> None:
-        if backend == self._current_backend:
-            return
-        self._current_backend = backend
-        self._update_backend_buttons()
-        self._restart_thread()
-
-    def _update_backend_buttons(self) -> None:
-        _ACTIVE   = ("background: #3b82f6; color: #ffffff; border-radius: 6px;"
-                     " font: 600 11px 'Segoe UI'; padding: 0 12px; border: none;")
-        _INACTIVE = ("background: transparent; color: #64748b; border-radius: 6px;"
-                     " font: 600 11px 'Segoe UI'; padding: 0 12px; border: none;")
-        be = self._current_backend
-        self._btn_mediapipe.setStyleSheet(
-            _ACTIVE if be == "mediapipe" else _INACTIVE
-        )
-        self._btn_yolo.setStyleSheet(
-            _ACTIVE if be == "yolo" else _INACTIVE
-        )
-        self._btn_movenet.setStyleSheet(
-            _ACTIVE if be in ("movenet_lightning", "movenet_thunder") else _INACTIVE
-        )
-        self._btn_rtmpose.setStyleSheet(
-            _ACTIVE if be in ("rtmpose_s", "rtmpose_m") else _INACTIVE
-        )
 
     # ── Source switching ───────────────────────────────────────────────────────
     def _on_source_video_clicked(self) -> None:

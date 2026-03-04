@@ -1,9 +1,8 @@
 """
-Unified keypoint format shared by all detector backends.
+Unified keypoint format used by the pose pipeline.
 
-Both MediaPipe and YOLOv8 detectors return a list[Keypoint] of exactly 33
-slots using MediaPipe landmark indices so the rest of the codebase is
-backend-agnostic.
+MediaPipe detector returns a list[Keypoint] of exactly 33
+slots using MediaPipe landmark indices.
 """
 from __future__ import annotations
 from dataclasses import dataclass

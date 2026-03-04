@@ -3,7 +3,7 @@ CameraThread — runs in a background QThread.
 
 Responsibilities:
   - Capture frames from webcam / video file / screen capture (mss).
-  - Pass frames through the active pose detector.
+    - Pass frames through the MediaPipe pose detector.
   - Delegate rep counting to RepCounter.
   - Draw the skeleton overlay via draw_skeleton().
   - Emit Qt signals consumed by the UI.
@@ -88,7 +88,6 @@ class CameraThread(QThread):
 
     def __init__(
         self,
-        backend:       str = "mediapipe",
         source:        str = SOURCE_CAMERA,
         monitor_index: int = 1,
         parent=None,
@@ -100,10 +99,7 @@ class CameraThread(QThread):
         self._source        = source          # SOURCE_CAMERA | SOURCE_SCREEN | file path
         self._monitor_index = monitor_index   # 1-based mss monitor index
 
-        # Detector is created HERE (main thread) because on Windows, PyTorch
-        # and other native libraries must load their DLLs on the main thread.
-        self._detector      = create_detector(backend)
-        self._backend_label = backend.upper()
+        self._detector      = create_detector()
 
     # ── Public API (thread-safe via Python GIL for simple assignments) ────────
     def set_exercise(self, exercise_id: int) -> None:
@@ -245,12 +241,12 @@ class CameraThread(QThread):
                 feedback_msg = "Move into frame"
 
         # ── HUD overlay: [BACKEND|SOURCE] ─────────────────────────────────────
-        label = f"[{self._backend_label}|{src_label}]"
+        label = f"[MEDIAPIPE|{src_label}]"
         cv2.putText(
             frame, label,
             (8, 22),
             cv2.FONT_HERSHEY_SIMPLEX, 0.58,
-            (0, 255, 128) if "YOLO" in self._backend_label else (255, 180, 0),
+            (255, 180, 0),
             2, cv2.LINE_AA,
         )
         # ─────────────────────────────────────────────────────────────────────

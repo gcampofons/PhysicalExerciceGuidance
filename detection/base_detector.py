@@ -1,8 +1,8 @@
 """
-Abstract base class for pose detector backends.
+Abstract base class for the pose detector.
 
-Any new backend must implement detect() and optionally close().
-The context-manager protocol is handled here so subclasses don't repeat it.
+It defines detect() and optional close(), and centralizes context-manager
+behavior.
 """
 from __future__ import annotations
 from abc import ABC, abstractmethod
@@ -11,7 +11,7 @@ from detection.keypoint import Keypoint
 
 
 class BaseDetector(ABC):
-    """Common interface for all pose detection backends."""
+    """Common interface for pose detection."""
 
     @abstractmethod
     def detect(self, bgr_frame: np.ndarray, timestamp_ms: int) -> list[Keypoint] | None:
