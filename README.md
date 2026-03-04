@@ -24,7 +24,7 @@ A real-time exercise guidance application that uses your webcam and AI pose esti
 
 | Romanian Deadlift (bottom/down phase) | Romanian Deadlift (top/up phase) |
 |---|---|
-| ![Romanian Deadlift - bottom/down phase](assets/screenshots/rd-hinge.png) | ![Romanian Deadlift - top/up phase](assets/screenshots/rd-stand.png) |
+| ![Romanian Deadlift - bottom/down phase](assets/screenshots/rd-down.png) | ![Romanian Deadlift - top/up phase](assets/screenshots/rd-up.png) |
 
 ---
 
@@ -85,8 +85,8 @@ PhysicalExerciceGuidance/
 │   ├── models/
 │   │   └── pose_landmarker_lite.task   # Auto-downloaded on first run
 │   └── screenshots/
-│       ├── rd-hinge.png
-│       └── rd-stand.png
+│       ├── rd-down.png
+│       └── rd-up.png
 │
 ├── core/                          # Pure domain logic — no UI, no OpenCV
 │   ├── config.py                  # Paths, camera settings, thresholds

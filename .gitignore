@@ -4,3 +4,10 @@
 __pycache__/
 *.pyc
 *.pyo
+
+# Runtime/downloaded model artifacts
+/assets/models/*.task
+/assets/models/*.tflite
+
+# Optional/experimental local weights
+*.pt

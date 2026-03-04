@@ -1,0 +1,9 @@
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+
+*.pt binary
+*.onnx binary
+*.tflite binary
+*.task binary
