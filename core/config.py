@@ -31,5 +31,6 @@ MIN_LANDMARK_VISIBILITY  = 0.6
 
 # ── Pose backend ──────────────────────────────────────────────────────────
 # Default backend used at startup. Can be switched live from the UI.
-# Options: "mediapipe" | "yolo"
+# Options: "mediapipe" | "yolo" | "movenet_lightning" | "movenet_thunder"
+#          "rtmpose_s" | "rtmpose_m" | "rtmpose_x"
 POSE_BACKEND = "mediapipe"

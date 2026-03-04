@@ -4,3 +4,12 @@ numpy>=1.24.0
 PyQt6>=6.6.0
 ultralytics>=8.0.0   # YOLOv8 backend (model auto-downloaded on first use)
 mss>=9.0.0           # screen capture source
+
+# ── Optional backends (install only what you need) ────────────────────────────
+# MoveNet backend:
+#   pip install tensorflow tensorflow-hub
+# Models descargados automáticamente por tensorflow-hub en %USERPROFILE%\.cache\tfhub_modules\
+
+# RTMPose backend:
+#   pip install rtmlib              (auto-installs onnxruntime)
+# ONNX models are auto-downloaded by rtmlib on first run (~/.rtmlib/).

@@ -13,7 +13,7 @@ import sys
 # Qt takes over, preventing WinError 1114 when switching to the YOLOv8 backend.
 try:
     import torch  # noqa: F401
-except Exception:
+except BaseException:
     pass  # YOLOv8 backend simply won't be available
 
 from PyQt6.QtWidgets import QApplication

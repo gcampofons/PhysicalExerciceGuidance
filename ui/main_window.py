@@ -101,13 +101,20 @@ class MainWindow(QMainWindow):
 
         self._btn_mediapipe = QPushButton("⚡ MediaPipe")
         self._btn_yolo      = QPushButton("🎯 YOLOv8")
-        for btn in (self._btn_mediapipe, self._btn_yolo):
+        self._btn_movenet   = QPushButton("🏃 MoveNet")
+        self._btn_rtmpose   = QPushButton("🔬 RTMPose")
+        for btn in (
+            self._btn_mediapipe, self._btn_yolo,
+            self._btn_movenet,   self._btn_rtmpose,
+        ):
             btn.setFixedHeight(28)
             btn.setCursor(Qt.CursorShape.PointingHandCursor)
             toggle_lay.addWidget(btn)
 
         self._btn_mediapipe.clicked.connect(lambda: self._on_backend_changed("mediapipe"))
         self._btn_yolo.clicked.connect(lambda: self._on_backend_changed("yolo"))
+        self._btn_movenet.clicked.connect(lambda: self._on_backend_changed("movenet_lightning"))
+        self._btn_rtmpose.clicked.connect(lambda: self._on_backend_changed("rtmpose_s"))
         lay.addWidget(toggle_wrap)
         self._update_backend_buttons()
 
@@ -329,11 +336,18 @@ class MainWindow(QMainWindow):
                      " font: 600 11px 'Segoe UI'; padding: 0 12px; border: none;")
         _INACTIVE = ("background: transparent; color: #64748b; border-radius: 6px;"
                      " font: 600 11px 'Segoe UI'; padding: 0 12px; border: none;")
+        be = self._current_backend
         self._btn_mediapipe.setStyleSheet(
-            _ACTIVE if self._current_backend == "mediapipe" else _INACTIVE
+            _ACTIVE if be == "mediapipe" else _INACTIVE
         )
         self._btn_yolo.setStyleSheet(
-            _ACTIVE if self._current_backend == "yolo" else _INACTIVE
+            _ACTIVE if be == "yolo" else _INACTIVE
+        )
+        self._btn_movenet.setStyleSheet(
+            _ACTIVE if be in ("movenet_lightning", "movenet_thunder") else _INACTIVE
+        )
+        self._btn_rtmpose.setStyleSheet(
+            _ACTIVE if be in ("rtmpose_s", "rtmpose_m") else _INACTIVE
         )
 
     # ── Source switching ───────────────────────────────────────────────────────
